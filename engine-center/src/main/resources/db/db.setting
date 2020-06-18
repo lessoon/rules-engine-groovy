@@ -1,6 +1,6 @@
 ## db.setting文件
 
-url = jdbc:mysql://192.168.1.76:3306/zjltest
+url = jdbc:mysql://192.168.1.76:3306/rule_engine_test
 user = foqa
 pass = foqa
 

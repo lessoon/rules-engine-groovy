@@ -16,8 +16,6 @@ import cn.hutool.setting.Setting;
 public abstract class AbstractDataBaseClient {
 
     public static Db use;
-//    public static String owner;
-//    public static String demoPath;
 
     static {
         //自定义数据库Setting，更多实用请参阅Hutool-Setting章节
@@ -25,14 +23,6 @@ public abstract class AbstractDataBaseClient {
         //获取指定配置，第二个参数为分组，用于多数据源，无分组情况下传null
         DSFactory ds = DSFactory.create(setting);
         use = new Db(ds.getDataSource());
-        // 读取数据库owner
-//        owner =  new Setting("service.setting").get("fms_owner");
-//        demoPath =  new Setting("service.setting").get("demoPath");
     }
-
-//    public String getDemoPath() {
-//        return demoPath;
-//    }
-
 
 }

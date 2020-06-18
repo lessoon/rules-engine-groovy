@@ -14,55 +14,46 @@ import java.util.*;
 
 @Repository
 public class RuleManageDaoImpl extends AbstractDataBaseClient implements RuleManageDao {
-    private static final Logger log = LoggerFactory.getLogger(AbstractRedisBaseClient.class);
+    private static final Logger log = LoggerFactory.getLogger(RuleManageDaoImpl.class);
 
     String TABLE_NAME = "rule_table";
 
     @Override
-    public void insert(Rule rule) {
-        Entity entity = new Entity().parseBean(rule, true, true);
+    public void insert(Rule rule) throws SQLException {
+        Entity entity = new Entity().parseBean(rule, false, true);
         entity.setTableName(TABLE_NAME);
-        try {
-            use.insert(entity);
-        } catch (SQLException throwables) {
-            log.error("保存报错！", throwables.getMessage());
-            throwables.printStackTrace();
-        }
+        use.insert(entity);
     }
 
     @Override
-    public List<Rule> selectAll() {
+    public List<Rule> selectAll() throws SQLException {
         Entity entity = new Entity();
         entity.setTableName(TABLE_NAME);
-        try {
-            return use.findAll(entity, Rule.class);
-        } catch (SQLException throwables) {
-            log.error("查询报错！", throwables.getMessage());
-            throwables.printStackTrace();
-        }
-        return null;
+        return use.findAll(entity, Rule.class);
     }
 
     @Override
-    public void delete(Rule rule) {
-        try {
-            use.del(TABLE_NAME, "uuid", rule.getUuid());
-        } catch (SQLException throwables) {
-            log.error("删除报错！", throwables.getMessage());
-            throwables.printStackTrace();
-        }
+    public List<Rule> selectByCondition(Rule rule) throws SQLException {
+        Entity entity = new Entity().parseBean(rule);
+        entity.setTableName(TABLE_NAME);
+        return use.findAll(entity, Rule.class);
     }
 
     @Override
-    public void update(Rule rule) {
-        Entity record = new Entity();
+    public void delete(Rule rule) throws SQLException {
+        use.del(TABLE_NAME, "uuid", rule.getUuid());
+
+    }
+
+    @Override
+    public void update(Rule rule) throws SQLException {
+        rule.setUuid(UUID.randomUUID().toString().trim().replace("-", ""));
+        Entity record = new Entity().parseBean(rule, false, true);
         record.setTableName(TABLE_NAME);
-        Entity where = new Entity().parseBean(rule, true, true);
-        try {
-            use.update(record, where);
-        } catch (SQLException throwables) {
-            log.error("修改报错！", throwables.getMessage());
-            throwables.printStackTrace();
-        }
+        Entity where = new Entity();
+        where.set("ruleName", rule.getRuleName());
+        where.setTableName(TABLE_NAME);
+        use.del(where);
+        use.insert(record);
     }
 }

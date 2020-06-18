@@ -1,7 +1,7 @@
 package com.reda.engine.center.common;
 
 import cn.hutool.db.nosql.redis.RedisDS;
-import com.reda.engine.center.exception.RuleException;
+import com.reda.engine.center.common.groovy.exception.RuleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
@@ -23,21 +23,25 @@ public abstract class AbstractRedisBaseClient {
     }
 
     static {
-        jedis = RedisDS.create().getJedis();
+        JEDIS = RedisDS.create().getJedis();
     }
 
-    static final Jedis jedis;
+    static final Jedis JEDIS;
 
 
     public static void set(String key, String value) throws RuleException {
-        if (!"OK".equals(jedis.set(key, value))) {
+        if (!"OK".equals(JEDIS.set(key, value))) {
             log.error("reids set fail!");
             throw new RuleException("reids set fail!");
         }
     }
 
     public static boolean exists(String key) {
-        return jedis.exists(key);
+        return JEDIS.exists(key);
+    }
+
+    public static boolean del(String key) {
+        return JEDIS.del(key) == 1L;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.reda.engine.center.config;
+package com.reda.engine.center.common.groovy;
 
 import groovy.lang.Binding;
 import org.springframework.beans.BeansException;

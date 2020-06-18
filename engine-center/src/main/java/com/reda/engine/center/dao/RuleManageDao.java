@@ -6,11 +6,13 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface RuleManageDao {
-    void insert(Rule rule) ;
+    void insert(Rule rule) throws SQLException;
 
-    List<Rule> selectAll() ;
+    List<Rule> selectAll() throws SQLException;
 
-    void delete(Rule rule) ;
+    List<Rule> selectByCondition(Rule rule) throws SQLException;
 
-    void update(Rule rule) ;
+    void delete(Rule rule) throws SQLException;
+
+    void update(Rule rule) throws SQLException;
 }

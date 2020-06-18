@@ -1,7 +1,7 @@
 package com.reda.engine.center.service;
 
 import com.reda.engine.center.entity.Rule;
-import com.reda.engine.center.exception.RuleException;
+import com.reda.engine.center.common.groovy.exception.RuleException;
 
 import java.util.List;
 
@@ -13,6 +13,8 @@ public interface RuleManageService {
     void updateRule(Rule rule);
 
     void runRule(Rule rule) throws RuleException;
+
+    Object runRule(Rule rule,Object param) throws RuleException;
 
     void deleteRule(Rule rule);
 

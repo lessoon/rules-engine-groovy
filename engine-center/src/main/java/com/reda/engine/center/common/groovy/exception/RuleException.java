@@ -1,4 +1,4 @@
-package com.reda.engine.center.exception;
+package com.reda.engine.center.common.groovy.exception;
 
 /**
  * 功能概述：

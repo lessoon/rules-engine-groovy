@@ -2,10 +2,9 @@ package com.reda.engine.center.controller;
 
 import cn.hutool.json.JSONUtil;
 import com.reda.engine.center.entity.Rule;
-import com.reda.engine.center.exception.RuleException;
+import com.reda.engine.center.common.groovy.exception.RuleException;
 import com.reda.engine.center.service.RuleManageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,8 +51,14 @@ public class RuleManageController {
      * @param value 规则ID
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public void updateRule(@RequestBody Rule value) {
-        ruleManageService.updateRule(value);
+    public String updateRule(@RequestBody Rule value) {
+        try {
+            ruleManageService.updateRule(value);
+            return "success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "fail";
+        }
     }
 
     /**
@@ -68,6 +73,22 @@ public class RuleManageController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 运行规则
+     *
+     * @param value 规则ID
+     */
+    @RequestMapping(value = "/runRuleMethod", method = RequestMethod.POST)
+    public String runRuleMethod(@RequestBody Rule value) {
+        try {
+            Object o = ruleManageService.runRule(value, value.getParam());
+            return JSONUtil.toJsonStr(o);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
